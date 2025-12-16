@@ -50,6 +50,7 @@ class ContatoController
         $contatos = $this->contatoService->listarContatos();
         http_response_code(200);
         echo json_encode($contatos);
+        exit;
     }
 
     private function obterContatoPorId(string $id): void
@@ -57,6 +58,7 @@ class ContatoController
         $contato = $this->contatoService->obterContatoPorId($id);
         http_response_code(200);
         echo json_encode($contato);
+        exit;
     }
 
     private function criarContato(): void
@@ -65,6 +67,7 @@ class ContatoController
         $contato = $this->contatoService->criarContato($dados);
         http_response_code(201);
         echo json_encode($contato);
+        exit;
     }
 
     private function atualizarContato(string $id): void
@@ -73,6 +76,7 @@ class ContatoController
         $contato = $this->contatoService->atualizarContato($dados, $id);
         http_response_code(200);
         echo json_encode($contato);
+        exit;
     }
 
     private function excluirContatoPorId(string $id): void
