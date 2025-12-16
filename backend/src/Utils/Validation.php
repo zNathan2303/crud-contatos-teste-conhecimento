@@ -3,7 +3,6 @@
 namespace App\Utils;
 
 use App\Exceptions\ValidationException;
-use Exception;
 use DateTime;
 
 class Validation

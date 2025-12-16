@@ -2,10 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Entities\Contato;
-use App\Repositories\ContatoRepository;
 use App\Services\ContatoService;
-use DateTime;
 
 class ContatoController
 {

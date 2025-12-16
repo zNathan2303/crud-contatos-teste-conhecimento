@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Repositories\ContatoRepository;
 use App\Entities\Contato;
 use App\Utils\Validation;
-use DateTime;
-use Exception;
 
 class ContatoService
 {
