@@ -84,4 +84,10 @@ class ContatoService
 
         return $contato;
     }
+
+    public function excluirContatoPorId(string $idString): void
+    {
+        $id = Validation::id($idString);
+        $this->contatoRepository->excluir($id);
+    }
 }

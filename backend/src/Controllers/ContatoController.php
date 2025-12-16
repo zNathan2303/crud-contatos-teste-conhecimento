@@ -35,6 +35,10 @@ class ContatoController
                 $this->atualizarContato($id);
                 break;
 
+            case 'DELETE':
+                $this->excluirContatoPorId($id);
+                break;
+
             default:
                 http_response_code(405);
                 echo json_encode(['erro' => 'Método não permitido']);
@@ -69,5 +73,12 @@ class ContatoController
         $contato = $this->contatoService->atualizarContato($dados, $id);
         http_response_code(200);
         echo json_encode($contato);
+    }
+
+    private function excluirContatoPorId(string $id): void
+    {
+        $this->contatoService->excluirContatoPorId($id);
+        http_response_code(204);
+        exit;
     }
 }

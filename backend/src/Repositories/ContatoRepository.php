@@ -130,4 +130,14 @@ class ContatoRepository
 
         return $contato;
     }
+
+    public function excluir(int $id): void
+    {
+        $pdo = $this->conectar();
+        $preparacao = $pdo->prepare("DELETE FROM tb_contato WHERE id = :id");
+        $preparacao->bindParam('id', $id);
+        $preparacao->execute();
+        $pdo = null;
+        $preparacao = null;
+    }
 }
