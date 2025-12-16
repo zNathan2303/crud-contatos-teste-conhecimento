@@ -3,8 +3,9 @@
 namespace App\Entities;
 
 use DateTime;
+use JsonSerializable;
 
-class Contato
+class Contato implements JsonSerializable
 {
     private int $id;
     private string $nome;
@@ -39,5 +40,21 @@ class Contato
         $this->celularComWhatsapp = $celularComWhatsapp;
         $this->notificacaoPorEmail = $notificacaoPorEmail;
         $this->notificacaoPorSms = $notificacaoPorSms;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            $this->id,
+            $this->nome,
+            $this->dataNascimento,
+            $this->email,
+            $this->profissao,
+            $this->telefone,
+            $this->celular,
+            $this->celularComWhatsapp,
+            $this->notificacaoPorEmail,
+            $this->notificacaoPorSms
+        ];
     }
 }

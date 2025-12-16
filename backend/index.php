@@ -9,4 +9,4 @@ $repo = new ContatoRepository();
 $contatos = $repo->listar();
 $contato = $repo->buscarPorId(1);
 
-var_dump($contato);
+echo json_encode($contatos);
