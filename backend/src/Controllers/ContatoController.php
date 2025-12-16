@@ -4,11 +4,19 @@ namespace App\Controllers;
 
 use App\Entities\Contato;
 use App\Repositories\ContatoRepository;
+use App\Services\ContatoService;
 use DateTime;
 
 class ContatoController
 {
-    public function pegarRequisicao(string $metodo, ?string $id)
+    private ContatoService $contatoService;
+
+    public function __construct(ContatoService $contatoService)
+    {
+        $this->contatoService = $contatoService;
+    }
+
+    public function pegarRequisicao(string $metodo, ?string $id): void
     {
         switch ($metodo) {
             case 'GET':
@@ -28,38 +36,24 @@ class ContatoController
         }
     }
 
-    private function listarContatos()
+    private function listarContatos(): void
     {
-        $repo = new ContatoRepository();
-        $contatos = $repo->listar();
+        $contatos = $this->contatoService->listarContatos();
         http_response_code(200);
         echo json_encode($contatos);
     }
 
-    private function obterContatoPorId(int $id)
+    private function obterContatoPorId(string $id): void
     {
-        $repo = new ContatoRepository();
-        $contato = $repo->buscarPorId($id);
+        $contato = $this->contatoService->obterContatoPorId($id);
         http_response_code(200);
         echo json_encode($contato);
     }
 
-    private function criarContato()
+    private function criarContato(): void
     {
         $dados = json_decode(file_get_contents('php://input'), true);
-        $repo = new ContatoRepository();
-        $contato = $repo->inserir(new Contato(
-            null,
-            $dados['nome'],
-            new DateTime($dados['dataNascimento']),
-            $dados['email'],
-            $dados['celular'],
-            $dados['profissao'] ?? null,
-            $dados['telefone'] ?? null,
-            $dados['celularComWhatsapp'],
-            $dados['notificacaoPorEmail'],
-            $dados['notificacaoPorSms']
-        ));
+        $contato = $this->contatoService->criarContato($dados);
         http_response_code(201);
         echo json_encode($contato);
     }

@@ -1,6 +1,8 @@
 <?php
 
 use App\Controllers\ContatoController;
+use App\Repositories\ContatoRepository;
+use App\Services\ContatoService;
 
 require_once('./autoload.php');
 
@@ -14,7 +16,7 @@ $recurso = $partes[0] ?? null;
 $id = $partes[1] ?? null;
 
 if ($recurso === 'contatos') {
-    $controller = new ContatoController();
+    $controller = new ContatoController(new ContatoService(new ContatoRepository()));
     $controller->pegarRequisicao($metodo, $id);
 } else {
     http_response_code(404);

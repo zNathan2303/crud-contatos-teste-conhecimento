@@ -70,7 +70,7 @@ class ContatoRepository
         );
     }
 
-    public function inserir(Contato $contato): void
+    public function inserir(Contato $contato): Contato
     {
         $pdo = $this->conectar();
         $preparacao = $pdo->prepare(
@@ -92,7 +92,11 @@ class ContatoRepository
             $contato->getNotificacaoPorEmail() ? 1 : 0,
             $contato->getNotificacaoPorSms() ? 1 : 0
         ]);
+        $contato->setId((int) $pdo->lastInsertId());
+
         $pdo = null;
         $preparacao = null;
+
+        return $contato;
     }
 }
