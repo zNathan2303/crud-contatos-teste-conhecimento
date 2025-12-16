@@ -45,16 +45,18 @@ class Contato implements JsonSerializable
     public function jsonSerialize(): mixed
     {
         return [
-            $this->id,
-            $this->nome,
-            $this->dataNascimento,
-            $this->email,
-            $this->profissao,
-            $this->telefone,
-            $this->celular,
-            $this->celularComWhatsapp,
-            $this->notificacaoPorEmail,
-            $this->notificacaoPorSms
+            'id' => $this->id,
+            'nome' => $this->nome,
+            'data_nascimento' => $this->dataNascimento instanceof DateTime
+                ? $this->dataNascimento->format('Y-m-d')
+                : $this->dataNascimento,
+            'email' => $this->email,
+            'profissao' => $this->profissao,
+            'telefone' => $this->telefone,
+            'celular' => $this->celular,
+            'celular_com_whatsapp' => $this->celularComWhatsapp,
+            'notificacao_por_email' => $this->notificacaoPorEmail,
+            'notificacao_por_sms' => $this->notificacaoPorSms
         ];
     }
 }

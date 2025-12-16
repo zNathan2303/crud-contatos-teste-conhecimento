@@ -1,12 +1,22 @@
 <?php
 
+use App\Controllers\ContatoController;
+
 require_once('./autoload.php');
 
-use App\Repositories\ContatoRepository;
+header('Content-Type: application/json; charset=UTF-8');
 
-$repo = new ContatoRepository();
+$metodo = $_SERVER['REQUEST_METHOD'];
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-$contatos = $repo->listar();
-$contato = $repo->buscarPorId(1);
+$partes = explode('/', trim($uri, '/'));
+$recurso = $partes[0] ?? null;
+$id = $partes[1] ?? null;
 
-echo json_encode($contatos);
+if ($recurso === 'contatos') {
+    $controller = new ContatoController();
+    $controller->pegarRequisicao($metodo, $id);
+} else {
+    http_response_code(404);
+    echo json_encode(['erro' => 'Rota não encontrada']);
+}
