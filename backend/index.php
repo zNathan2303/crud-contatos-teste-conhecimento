@@ -7,5 +7,6 @@ use App\Repositories\ContatoRepository;
 $repo = new ContatoRepository();
 
 $contatos = $repo->listar();
+$contato = $repo->buscarPorId(1);
 
-print_r($contatos);
+var_dump($contato);
