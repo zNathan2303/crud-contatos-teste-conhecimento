@@ -5,6 +5,7 @@ use App\Repositories\ContatoRepository;
 use App\Services\ContatoService;
 
 require_once('./autoload.php');
+require_once('./exception_handler.php');
 
 header('Content-Type: application/json; charset=UTF-8');
 

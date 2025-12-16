@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Exceptions\ValidationException;
 use Exception;
 use DateTime;
 
@@ -18,7 +19,7 @@ class Validation
             if ($podeSerNulo) {
                 return null;
             }
-            throw new Exception("O campo $nomeDoCampo é obrigatório");
+            throw new ValidationException("O campo $nomeDoCampo é obrigatório");
         }
 
         $campo = trim($campo);
@@ -27,11 +28,11 @@ class Validation
             if ($podeSerNulo) {
                 return null;
             }
-            throw new Exception("$nomeDoCampo não pode ser vazio");
+            throw new ValidationException("$nomeDoCampo não pode ser vazio");
         }
 
         if (mb_strlen($campo, 'UTF-8') > $tamanhoMaximo) {
-            throw new Exception("$nomeDoCampo deve ter no máximo $tamanhoMaximo caracteres");
+            throw new ValidationException("$nomeDoCampo deve ter no máximo $tamanhoMaximo caracteres");
         }
 
         return $campo;
@@ -42,7 +43,7 @@ class Validation
         $bool = filter_var($valor, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
         if ($bool === null) {
-            throw new Exception("Campo $nomeDoCampo inválido");
+            throw new ValidationException("Campo $nomeDoCampo inválido");
         }
 
         return $bool;
@@ -51,17 +52,17 @@ class Validation
     public static function id(?string $valor): int
     {
         if ($valor === null) {
-            throw new Exception("Id é obrigatório");
+            throw new ValidationException("Id é obrigatório");
         }
 
         if (!is_numeric($valor)) {
-            throw new Exception("Id deve ser um número");
+            throw new ValidationException("Id deve ser um número");
         }
 
         $id = (int) $valor;
 
         if ($id <= 0) {
-            throw new Exception("Id deve ser um número maior que zero");
+            throw new ValidationException("Id deve ser um número maior que zero");
         }
 
         return $id;
@@ -78,13 +79,13 @@ class Validation
                 return null;
             }
 
-            throw new Exception("O campo $nomeDoCampo é obrigatório");
+            throw new ValidationException("O campo $nomeDoCampo é obrigatório");
         }
 
         $valor = trim($valor);
 
         if ($valor === '') {
-            throw new Exception("O campo $nomeDoCampo não pode ser vazio");
+            throw new ValidationException("O campo $nomeDoCampo não pode ser vazio");
         }
 
         $data = DateTime::createFromFormat('Y-m-d', $valor);
@@ -92,7 +93,7 @@ class Validation
         $erros = DateTime::getLastErrors();
 
         if ($data === false || $erros['warning_count'] > 0 || $erros['error_count'] > 0) {
-            throw new Exception("O campo $nomeDoCampo deve seguir o formato ANO-MÊS-DIA");
+            throw new ValidationException("O campo $nomeDoCampo deve seguir o formato ANO-MÊS-DIA");
         }
 
         return $data;

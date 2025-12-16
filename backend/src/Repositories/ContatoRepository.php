@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Entities\Contato;
+use App\Exceptions\ContatoNotFoundException;
 use PDO;
 use DateTime;
 
@@ -53,6 +54,9 @@ class ContatoRepository
         $preparacao->bindParam('id', $id);
         $preparacao->execute();
         $consulta = $preparacao->fetch(PDO::FETCH_ASSOC);
+        if (!$consulta) {
+            throw new ContatoNotFoundException('Contato com o id informado não encontrado');
+        }
         $pdo = null;
         $preparacao = null;
 
@@ -102,6 +106,9 @@ class ContatoRepository
 
     public function atualizar(Contato $contato): Contato
     {
+        // Verificar se o id existe no banco, caso contrário lançar a exceção
+        $this->buscarPorId($contato->getId());
+
         $pdo = $this->conectar();
         $preparacao = $pdo->prepare(
             "UPDATE
@@ -137,6 +144,11 @@ class ContatoRepository
         $preparacao = $pdo->prepare("DELETE FROM tb_contato WHERE id = :id");
         $preparacao->bindParam('id', $id);
         $preparacao->execute();
+        if (!$preparacao->rowCount() > 0) {
+            throw new ContatoNotFoundException(
+                'Contato não encontrado. Não foi possível excluir o registro com o id informado.'
+            );
+        }
         $pdo = null;
         $preparacao = null;
     }
