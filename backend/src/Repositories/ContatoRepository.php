@@ -69,4 +69,30 @@ class ContatoRepository
             (bool) $consulta['notificacao_por_sms']
         );
     }
+
+    public function inserir(Contato $contato): void
+    {
+        $pdo = $this->conectar();
+        $preparacao = $pdo->prepare(
+            "INSERT INTO tb_contato (
+                nome, data_nascimento, email, profissao, telefone, celular,
+                celular_com_whatsapp, notificacao_por_email, notificacao_por_sms
+            ) VALUES (
+                ?, ?, ?, ?, ?, ?, ?, ?, ?
+            );"
+        );
+        $preparacao->execute([
+            $contato->getNome(),
+            $contato->getDataNascimento()->format('Y-m-d'),
+            $contato->getEmail(),
+            $contato->getProfissao(),
+            $contato->getTelefone(),
+            $contato->getCelular(),
+            $contato->getCelularComWhatsapp() ? 1 : 0,
+            $contato->getNotificacaoPorEmail() ? 1 : 0,
+            $contato->getNotificacaoPorSms() ? 1 : 0
+        ]);
+        $pdo = null;
+        $preparacao = null;
+    }
 }

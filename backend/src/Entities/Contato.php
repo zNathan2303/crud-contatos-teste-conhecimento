@@ -7,7 +7,7 @@ use JsonSerializable;
 
 class Contato implements JsonSerializable
 {
-    private int $id;
+    private ?int $id;
     private string $nome;
     private DateTime $dataNascimento;
     private string $email;
@@ -19,7 +19,7 @@ class Contato implements JsonSerializable
     private bool $notificacaoPorSms;
 
     public function __construct(
-        int $id,
+        ?int $id,
         string $nome,
         DateTime $dataNascimento,
         string $email,
@@ -58,5 +58,50 @@ class Contato implements JsonSerializable
             'notificacao_por_email' => $this->notificacaoPorEmail,
             'notificacao_por_sms' => $this->notificacaoPorSms
         ];
+    }
+
+    public function getNome(): string
+    {
+        return $this->nome;
+    }
+
+    public function getDataNascimento(): DateTime
+    {
+        return $this->dataNascimento;
+    }
+
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    public function getProfissao(): ?string
+    {
+        return $this->profissao;
+    }
+
+    public function getTelefone(): ?string
+    {
+        return $this->telefone;
+    }
+
+    public function getCelular(): string
+    {
+        return $this->celular;
+    }
+
+    public function getCelularComWhatsapp(): bool
+    {
+        return $this->celularComWhatsapp;
+    }
+
+    public function getNotificacaoPorEmail(): bool
+    {
+        return $this->notificacaoPorEmail;
+    }
+
+    public function getNotificacaoPorSms(): bool
+    {
+        return $this->notificacaoPorSms;
     }
 }
