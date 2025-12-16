@@ -99,4 +99,35 @@ class ContatoRepository
 
         return $contato;
     }
+
+    public function atualizar(Contato $contato): Contato
+    {
+        $pdo = $this->conectar();
+        $preparacao = $pdo->prepare(
+            "UPDATE
+                tb_contato
+            SET
+                nome = ?, data_nascimento = ?, email = ?, profissao = ?, telefone = ?, celular = ?,
+                celular_com_whatsapp = ?, notificacao_por_email = ?, notificacao_por_sms = ?
+            WHERE
+                id = ?"
+        );
+        $preparacao->execute([
+            $contato->getNome(),
+            $contato->getDataNascimento()->format('Y-m-d'),
+            $contato->getEmail(),
+            $contato->getProfissao(),
+            $contato->getTelefone(),
+            $contato->getCelular(),
+            $contato->getCelularComWhatsapp() ? 1 : 0,
+            $contato->getNotificacaoPorEmail() ? 1 : 0,
+            $contato->getNotificacaoPorSms() ? 1 : 0,
+            $contato->getId()
+        ]);
+
+        $pdo = null;
+        $preparacao = null;
+
+        return $contato;
+    }
 }

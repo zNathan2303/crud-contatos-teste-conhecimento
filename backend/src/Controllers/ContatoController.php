@@ -30,6 +30,11 @@ class ContatoController
             case 'POST':
                 $this->criarContato();
                 break;
+
+            case 'PUT':
+                $this->atualizarContato($id);
+                break;
+
             default:
                 http_response_code(405);
                 echo json_encode(['erro' => 'Método não permitido']);
@@ -55,6 +60,14 @@ class ContatoController
         $dados = json_decode(file_get_contents('php://input'), true);
         $contato = $this->contatoService->criarContato($dados);
         http_response_code(201);
+        echo json_encode($contato);
+    }
+
+    private function atualizarContato(string $id): void
+    {
+        $dados = json_decode(file_get_contents('php://input'), true);
+        $contato = $this->contatoService->atualizarContato($dados, $id);
+        http_response_code(200);
         echo json_encode($contato);
     }
 }
