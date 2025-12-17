@@ -7,6 +7,7 @@ import Checkbox from "./Checkbox";
 import InputText from "./InputText";
 import { useForm } from "react-hook-form";
 import ButtonSave from "./ButtonSave";
+import ButtonCancel from "./ButtonCancel";
 
 interface FormProps {
   onSuccess: () => void;
@@ -196,8 +197,19 @@ export default function Form({
           registerName="notificacao_por_sms"
         />
       </div>
-      <div className="w-full flex justify-end">
-        {editando ? <ButtonSave /> : <ButtonSubmit />}
+      <div className="w-full flex gap-12 justify-end">
+        {editando ? (
+          <>
+            <ButtonCancel
+              setDadosIniciais={setDadosIniciais}
+              setEditando={setEditando}
+              reset={reset}
+            />
+            <ButtonSave />
+          </>
+        ) : (
+          <ButtonSubmit />
+        )}
       </div>
     </form>
   );
