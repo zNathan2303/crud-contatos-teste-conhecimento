@@ -1,5 +1,6 @@
 import type { ContatoDetailsJSON } from "../../interfaces/Contato";
 import { criarContato } from "../../services/contatosApi";
+import { maskTelefone } from "../../utils/masks";
 import ButtonSubmit from "./ButtonSubmit";
 import Checkbox from "./Checkbox";
 import InputText from "./InputText";
@@ -10,10 +11,22 @@ interface FormProps {
 }
 
 export default function Form({ onSuccess }: FormProps) {
-  const { register, handleSubmit, reset } = useForm<ContatoDetailsJSON>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContatoDetailsJSON>({
+    mode: "onChange",
+  });
 
   async function onSubmit(data: ContatoDetailsJSON) {
-    await criarContato(data);
+    const payload: ContatoDetailsJSON = {
+      ...data,
+      telefone: data.telefone ? data.telefone.replace(/\D/g, "") : undefined,
+      celular: data.celular.replace(/\D/g, ""),
+    };
+    await criarContato(payload);
     reset();
     onSuccess();
   }
@@ -27,6 +40,15 @@ export default function Form({ onSuccess }: FormProps) {
           placeholder="Ex.: Letícia Pacheco dos Santos"
           register={register}
           registerName="nome"
+          rules={{
+            required: "Nome é obrigatório",
+            maxLength: {
+              value: 100,
+              message: "Máximo de 100 caracteres",
+            },
+          }}
+          error={errors.nome?.message}
+          maxLength={100}
         />
         <InputText
           id="data-nascimento"
@@ -35,6 +57,10 @@ export default function Form({ onSuccess }: FormProps) {
           isDate
           register={register}
           registerName="data_nascimento"
+          rules={{
+            required: "Data de nascimento é obrigatória",
+          }}
+          error={errors.data_nascimento?.message}
         />
         <InputText
           id="email"
@@ -42,6 +68,19 @@ export default function Form({ onSuccess }: FormProps) {
           placeholder="Ex.: leticia@email.com"
           register={register}
           registerName="email"
+          rules={{
+            required: "Email é obrigatório",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: "E-mail inválido",
+            },
+            maxLength: {
+              value: 255,
+              message: "Máximo de 255 caracteres",
+            },
+          }}
+          error={errors.email?.message}
+          maxLength={255}
         />
         <InputText
           id="profissao"
@@ -49,6 +88,14 @@ export default function Form({ onSuccess }: FormProps) {
           placeholder="Ex.: Desenvolvedora Web"
           register={register}
           registerName="profissao"
+          rules={{
+            maxLength: {
+              value: 100,
+              message: "Máximo de 100 caracteres",
+            },
+          }}
+          error={errors.profissao?.message}
+          maxLength={100}
         />
         <InputText
           id="telefone"
@@ -56,6 +103,22 @@ export default function Form({ onSuccess }: FormProps) {
           placeholder="Ex.: (11) 4033-2019"
           register={register}
           registerName="telefone"
+          mask={maskTelefone}
+          rules={{
+            validate: (value) => {
+              const numeros =
+                typeof value === "string" ? value.replace(/\D/g, "") : "";
+
+              if (numeros.length === 0) return true;
+
+              return (
+                numeros.length === 10 ||
+                "O telefone deve conter exatamente 10 números"
+              );
+            },
+          }}
+          error={errors.telefone?.message}
+          maxLength={14}
         />
         <InputText
           id="celular"
@@ -63,6 +126,20 @@ export default function Form({ onSuccess }: FormProps) {
           placeholder="Ex.: (11) 98493-2039"
           register={register}
           registerName="celular"
+          mask={maskTelefone}
+          rules={{
+            required: "Celular é obrigatório",
+            validate: (value) => {
+              const numeros =
+                typeof value === "string" ? value.replace(/\D/g, "") : "";
+
+              return (
+                numeros.length === 11 || "O celular deve conter 11 números"
+              );
+            },
+          }}
+          error={errors.celular?.message}
+          maxLength={15}
         />
       </div>
       <div className="grid grid-cols-2 gap-y-8 gap-x-20">
