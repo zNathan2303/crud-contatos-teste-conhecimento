@@ -13,3 +13,15 @@ export interface ContatoJSON {
   email: string;
   celular: string;
 }
+
+export interface ContatoDetailsJSON {
+  nome: string;
+  data_nascimento: string;
+  email: string;
+  profissao: string;
+  telefone: string;
+  celular: string;
+  celular_com_whatsapp: boolean;
+  notificacao_por_email: boolean;
+  notificacao_por_sms: boolean;
+}

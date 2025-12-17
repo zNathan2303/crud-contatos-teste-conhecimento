@@ -1,19 +1,11 @@
-import { useEffect, useState } from "react";
-import { obterTodosContatos } from "../../services/contatosApi";
 import TableRow from "./TableRow";
 import type { Contato } from "../../interfaces/Contato";
 
-export default function Table() {
-  const [contatos, setContatos] = useState<Contato[] | null>(null);
+interface TableProps {
+  contatos: Contato[];
+}
 
-  useEffect(() => {
-    async function load() {
-      const response = await obterTodosContatos();
-      setContatos(response);
-    }
-    load();
-  }, []);
-
+export default function Table({ contatos }: TableProps) {
   return (
     <div>
       <table className="w-full shadow-md table-fixed">
@@ -27,7 +19,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-400">
-          {contatos?.map((contato) => {
+          {contatos.map((contato) => {
             return (
               <TableRow
                 celular={contato.celular}
