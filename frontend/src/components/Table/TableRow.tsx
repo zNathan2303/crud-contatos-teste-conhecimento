@@ -1,8 +1,12 @@
+import { apagarContato } from "../../services/contatosApi";
+
 interface TableRowProps {
   nome: string;
   dataNascimento: string;
   email: string;
   celular: string;
+  id: number;
+  onDelete: () => void;
 }
 
 export default function TableRow({
@@ -10,7 +14,14 @@ export default function TableRow({
   dataNascimento,
   email,
   celular,
+  id,
+  onDelete,
 }: TableRowProps) {
+  async function excluirContato(id: number) {
+    await apagarContato(id);
+    onDelete();
+  }
+
   return (
     <tr className="h-12">
       <td className="text-center text-zinc-600 truncate px-1.5">{nome}</td>
@@ -24,7 +35,10 @@ export default function TableRow({
           <button className="cursor-pointer hover:scale-110 active:scale-95 transition-transform">
             <img src="./src/assets/editar.png" alt="editar" />
           </button>
-          <button className="cursor-pointer hover:scale-110 active:scale-95 transition-transform">
+          <button
+            onClick={() => excluirContato(id)}
+            className="cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+          >
             <img src="./src/assets/excluir.png" alt="excluir" />
           </button>
         </div>

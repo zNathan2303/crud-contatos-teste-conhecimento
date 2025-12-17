@@ -3,9 +3,10 @@ import type { Contato } from "../../interfaces/Contato";
 
 interface TableProps {
   contatos: Contato[];
+  onDelete: () => void;
 }
 
-export default function Table({ contatos }: TableProps) {
+export default function Table({ contatos, onDelete }: TableProps) {
   return (
     <div>
       <table className="w-full shadow-md table-fixed">
@@ -22,11 +23,13 @@ export default function Table({ contatos }: TableProps) {
           {contatos.map((contato) => {
             return (
               <TableRow
+                id={contato.id}
                 celular={contato.celular}
                 dataNascimento={contato.dataNascimento}
                 email={contato.email}
                 nome={contato.nome}
                 key={contato.id}
+                onDelete={onDelete}
               />
             );
           })}

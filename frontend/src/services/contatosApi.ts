@@ -24,6 +24,15 @@ export async function criarContato(contato: ContatoDetailsJSON) {
   await fetch(url, options);
 }
 
+export async function apagarContato(id: number) {
+  const url = `http://localhost:8080/contatos/${id}`;
+  const options = {
+    method: "DELETE",
+  };
+
+  await fetch(url, options);
+}
+
 function contatoConvert(json: ContatoJSON): Contato {
   return {
     id: json.id,

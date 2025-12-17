@@ -27,7 +27,7 @@ export default function App() {
       <div className="flex flex-col px-page-default pt-20 pb-40 gap-y-20">
         <Form onSuccess={carregarContatos} />
         <hr className="border-zinc-400 w-divide-line" />
-        <Table contatos={contatos} />
+        <Table contatos={contatos} onDelete={carregarContatos} />
       </div>
       <Footer />
     </div>
