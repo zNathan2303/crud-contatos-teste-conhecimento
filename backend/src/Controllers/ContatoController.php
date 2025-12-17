@@ -36,6 +36,10 @@ class ContatoController
                 $this->excluirContatoPorId($id);
                 break;
 
+            case 'OPTIONS':
+                $this->permitirOptions();
+                break;
+
             default:
                 http_response_code(405);
                 echo json_encode(['erro' => 'Método não permitido']);
@@ -80,6 +84,12 @@ class ContatoController
     {
         $this->contatoService->excluirContatoPorId($id);
         http_response_code(204);
+        exit;
+    }
+
+    private function permitirOptions()
+    {
+        http_response_code(200);
         exit;
     }
 }

@@ -8,7 +8,11 @@ require_once('./autoload.php');
 require_once('./exception_handler.php');
 
 header('Content-Type: application/json; charset=UTF-8');
+
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Credentials: true");
 
 $metodo = $_SERVER['REQUEST_METHOD'];
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
