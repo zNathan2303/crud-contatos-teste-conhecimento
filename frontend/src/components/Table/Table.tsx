@@ -1,6 +1,19 @@
+import { useEffect, useState } from "react";
+import { obterTodosContatos } from "../../services/contatosApi";
 import TableRow from "./TableRow";
+import type { Contato } from "../../interfaces/Contato";
 
 export default function Table() {
+  const [contatos, setContatos] = useState<Contato[] | null>(null);
+
+  useEffect(() => {
+    async function load() {
+      const response = await obterTodosContatos();
+      setContatos(response);
+    }
+    load();
+  }, []);
+
   return (
     <div>
       <table className="w-full shadow-md table-fixed">
@@ -14,24 +27,17 @@ export default function Table() {
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-400">
-          <TableRow
-            nome="Letícia Pacheco"
-            dataNascimento="03/10/2003"
-            email="leticia@gmail.com"
-            celular="(11) 98493-2039"
-          />
-          <TableRow
-            nome="Letícia Pacheco"
-            dataNascimento="03/10/2003"
-            email="leticia@gmail.com"
-            celular="(11) 98493-2039"
-          />
-          <TableRow
-            nome="Letícia Pacheco"
-            dataNascimento="03/10/2003"
-            email="leticia@gmail.com"
-            celular="(11) 98493-2039"
-          />
+          {contatos?.map((contato) => {
+            return (
+              <TableRow
+                celular={contato.celular}
+                dataNascimento={contato.dataNascimento}
+                email={contato.email}
+                nome={contato.nome}
+                key={contato.id}
+              />
+            );
+          })}
         </tbody>
       </table>
     </div>
