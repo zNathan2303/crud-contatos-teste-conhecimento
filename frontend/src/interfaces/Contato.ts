@@ -15,6 +15,7 @@ export interface ContatoJSON {
 }
 
 export interface ContatoDetailsJSON {
+  id: number;
   nome: string;
   data_nascimento: string;
   email: string;

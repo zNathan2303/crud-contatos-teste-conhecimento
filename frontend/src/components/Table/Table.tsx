@@ -5,12 +5,14 @@ interface TableProps {
   contatos: Contato[];
   onDelete: () => void;
   setDadosIniciais: (contato: ContatoDetailsJSON) => void;
+  setEditando: (arg0: boolean) => void;
 }
 
 export default function Table({
   contatos,
   onDelete,
   setDadosIniciais,
+  setEditando,
 }: TableProps) {
   return (
     <div>
@@ -36,6 +38,7 @@ export default function Table({
                 key={contato.id}
                 onDelete={onDelete}
                 setDadosIniciais={setDadosIniciais}
+                setEditando={setEditando}
               />
             );
           })}

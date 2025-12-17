@@ -8,7 +8,9 @@ import { obterTodosContatos } from "./services/contatosApi";
 
 export default function App() {
   const [contatos, setContatos] = useState<Contato[]>([]);
+  const [editando, setEditando] = useState<boolean>(false);
   const [dadosIniciais, setDadosIniciais] = useState<ContatoDetailsJSON>({
+    id: 0,
     celular: "",
     data_nascimento: "",
     email: "",
@@ -36,12 +38,19 @@ export default function App() {
     <div className="bg-white h-screen flex flex-col">
       <Header />
       <div className="flex flex-col px-page-default pt-20 pb-40 gap-y-20">
-        <Form onSuccess={carregarContatos} dadosIniciais={dadosIniciais} />
+        <Form
+          onSuccess={carregarContatos}
+          dadosIniciais={dadosIniciais}
+          editando={editando}
+          setDadosIniciais={setDadosIniciais}
+          setEditando={setEditando}
+        />
         <hr className="border-zinc-400 w-divide-line" />
         <Table
           contatos={contatos}
           onDelete={carregarContatos}
           setDadosIniciais={setDadosIniciais}
+          setEditando={setEditando}
         />
       </div>
       <Footer />

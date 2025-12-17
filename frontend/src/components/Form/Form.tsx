@@ -1,18 +1,28 @@
 import { useEffect } from "react";
 import type { ContatoDetailsJSON } from "../../interfaces/Contato";
-import { criarContato } from "../../services/contatosApi";
+import { atualizarContato, criarContato } from "../../services/contatosApi";
 import { maskTelefone } from "../../utils/masks";
 import ButtonSubmit from "./ButtonSubmit";
 import Checkbox from "./Checkbox";
 import InputText from "./InputText";
 import { useForm } from "react-hook-form";
+import ButtonSave from "./ButtonSave";
 
 interface FormProps {
   onSuccess: () => void;
   dadosIniciais: ContatoDetailsJSON;
+  editando: boolean;
+  setDadosIniciais: (arg0: ContatoDetailsJSON) => void;
+  setEditando: (arg0: boolean) => void;
 }
 
-export default function Form({ onSuccess, dadosIniciais }: FormProps) {
+export default function Form({
+  onSuccess,
+  dadosIniciais,
+  editando,
+  setDadosIniciais,
+  setEditando,
+}: FormProps) {
   const {
     register,
     handleSubmit,
@@ -29,10 +39,28 @@ export default function Form({ onSuccess, dadosIniciais }: FormProps) {
   async function onSubmit(data: ContatoDetailsJSON) {
     const payload: ContatoDetailsJSON = {
       ...data,
+      id: dadosIniciais.id,
       telefone: data.telefone ? data.telefone.replace(/\D/g, "") : undefined,
       celular: data.celular.replace(/\D/g, ""),
     };
-    await criarContato(payload);
+    if (editando) {
+      await atualizarContato(payload);
+    } else {
+      await criarContato(payload);
+    }
+    setDadosIniciais({
+      id: 0,
+      nome: "",
+      data_nascimento: "",
+      email: "",
+      profissao: "",
+      telefone: "",
+      celular: "",
+      celular_com_whatsapp: false,
+      notificacao_por_email: false,
+      notificacao_por_sms: false,
+    });
+    setEditando(false);
     reset();
     onSuccess();
   }
@@ -169,7 +197,7 @@ export default function Form({ onSuccess, dadosIniciais }: FormProps) {
         />
       </div>
       <div className="w-full flex justify-end">
-        <ButtonSubmit />
+        {editando ? <ButtonSave /> : <ButtonSubmit />}
       </div>
     </form>
   );

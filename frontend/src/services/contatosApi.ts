@@ -43,6 +43,17 @@ export async function obterContatoPorId(
   return contato;
 }
 
+export async function atualizarContato(contato: ContatoDetailsJSON) {
+  const url = `http://localhost:8080/contatos/${contato.id}`;
+  const options = {
+    method: "PUT",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify(contato),
+  };
+
+  await fetch(url, options);
+}
+
 function contatoConvert(json: ContatoJSON): Contato {
   return {
     id: json.id,

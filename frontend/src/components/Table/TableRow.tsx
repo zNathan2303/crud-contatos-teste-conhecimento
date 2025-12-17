@@ -9,6 +9,7 @@ interface TableRowProps {
   id: number;
   onDelete: () => void;
   setDadosIniciais: (contato: ContatoDetailsJSON) => void;
+  setEditando: (arg0: boolean) => void;
 }
 
 export default function TableRow({
@@ -19,6 +20,7 @@ export default function TableRow({
   id,
   onDelete,
   setDadosIniciais,
+  setEditando,
 }: TableRowProps) {
   async function excluirContato(id: number) {
     await apagarContato(id);
@@ -28,6 +30,10 @@ export default function TableRow({
   async function buscarContato(id: number) {
     const contato = await obterContatoPorId(id);
     setDadosIniciais(contato);
+  }
+
+  function editandoContato() {
+    setEditando(true);
   }
 
   return (
@@ -41,7 +47,10 @@ export default function TableRow({
       <td className="m-auto">
         <div className="flex justify-center items-center gap-4 w-full h-full">
           <button
-            onClick={() => buscarContato(id)}
+            onClick={() => {
+              buscarContato(id);
+              editandoContato();
+            }}
             className="cursor-pointer hover:scale-110 active:scale-95 transition-transform"
           >
             <img src="./src/assets/editar.png" alt="editar" />
