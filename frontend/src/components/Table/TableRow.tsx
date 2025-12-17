@@ -1,4 +1,5 @@
-import { apagarContato } from "../../services/contatosApi";
+import type { ContatoDetailsJSON } from "../../interfaces/Contato";
+import { apagarContato, obterContatoPorId } from "../../services/contatosApi";
 
 interface TableRowProps {
   nome: string;
@@ -7,6 +8,7 @@ interface TableRowProps {
   celular: string;
   id: number;
   onDelete: () => void;
+  setDadosIniciais: (contato: ContatoDetailsJSON) => void;
 }
 
 export default function TableRow({
@@ -16,10 +18,16 @@ export default function TableRow({
   celular,
   id,
   onDelete,
+  setDadosIniciais,
 }: TableRowProps) {
   async function excluirContato(id: number) {
     await apagarContato(id);
     onDelete();
+  }
+
+  async function buscarContato(id: number) {
+    const contato = await obterContatoPorId(id);
+    setDadosIniciais(contato);
   }
 
   return (
@@ -32,7 +40,10 @@ export default function TableRow({
       <td className="text-center text-zinc-600 truncate px-1.5">{celular}</td>
       <td className="m-auto">
         <div className="flex justify-center items-center gap-4 w-full h-full">
-          <button className="cursor-pointer hover:scale-110 active:scale-95 transition-transform">
+          <button
+            onClick={() => buscarContato(id)}
+            className="cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+          >
             <img src="./src/assets/editar.png" alt="editar" />
           </button>
           <button

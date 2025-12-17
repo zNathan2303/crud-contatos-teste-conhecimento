@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import type { ContatoDetailsJSON } from "../../interfaces/Contato";
 import { criarContato } from "../../services/contatosApi";
 import { maskTelefone } from "../../utils/masks";
@@ -8,9 +9,10 @@ import { useForm } from "react-hook-form";
 
 interface FormProps {
   onSuccess: () => void;
+  dadosIniciais: ContatoDetailsJSON;
 }
 
-export default function Form({ onSuccess }: FormProps) {
+export default function Form({ onSuccess, dadosIniciais }: FormProps) {
   const {
     register,
     handleSubmit,
@@ -19,6 +21,10 @@ export default function Form({ onSuccess }: FormProps) {
   } = useForm<ContatoDetailsJSON>({
     mode: "onChange",
   });
+
+  useEffect(() => {
+    reset(dadosIniciais);
+  }, [dadosIniciais, reset]);
 
   async function onSubmit(data: ContatoDetailsJSON) {
     const payload: ContatoDetailsJSON = {

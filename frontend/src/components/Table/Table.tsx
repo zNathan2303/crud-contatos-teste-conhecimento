@@ -1,12 +1,17 @@
 import TableRow from "./TableRow";
-import type { Contato } from "../../interfaces/Contato";
+import type { Contato, ContatoDetailsJSON } from "../../interfaces/Contato";
 
 interface TableProps {
   contatos: Contato[];
   onDelete: () => void;
+  setDadosIniciais: (contato: ContatoDetailsJSON) => void;
 }
 
-export default function Table({ contatos, onDelete }: TableProps) {
+export default function Table({
+  contatos,
+  onDelete,
+  setDadosIniciais,
+}: TableProps) {
   return (
     <div>
       <table className="w-full shadow-md table-fixed">
@@ -30,6 +35,7 @@ export default function Table({ contatos, onDelete }: TableProps) {
                 nome={contato.nome}
                 key={contato.id}
                 onDelete={onDelete}
+                setDadosIniciais={setDadosIniciais}
               />
             );
           })}

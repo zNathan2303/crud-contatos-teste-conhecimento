@@ -33,6 +33,16 @@ export async function apagarContato(id: number) {
   await fetch(url, options);
 }
 
+export async function obterContatoPorId(
+  id: number
+): Promise<ContatoDetailsJSON> {
+  const url = `http://localhost:8080/contatos/${id}`;
+  const response = await fetch(url);
+  const contato: ContatoDetailsJSON = await response.json();
+
+  return contato;
+}
+
 function contatoConvert(json: ContatoJSON): Contato {
   return {
     id: json.id,
