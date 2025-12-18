@@ -112,6 +112,8 @@ npm install
 npm run dev
 ```
 
+4. Acesse a rota disponibilizada pelo Vite.
+
 ## Autor
 
 [Nathan da Silva Costa](https://www.linkedin.com/in/nathandasilvacosta/)
