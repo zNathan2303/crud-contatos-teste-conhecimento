@@ -42,7 +42,7 @@ class Contato implements JsonSerializable
         $this->notificacaoPorSms = $notificacaoPorSms;
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,
