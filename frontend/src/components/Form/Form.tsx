@@ -34,7 +34,12 @@ export default function Form({
   });
 
   useEffect(() => {
-    reset(dadosIniciais);
+    const dadosFormatados = {
+      ...dadosIniciais,
+      telefone: maskTelefone(dadosIniciais.telefone ?? ""),
+      celular: maskTelefone(dadosIniciais.celular),
+    };
+    reset(dadosFormatados);
   }, [dadosIniciais, reset]);
 
   async function onSubmit(data: ContatoDetailsJSON) {
